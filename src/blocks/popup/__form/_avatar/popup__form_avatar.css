@@ -1,0 +1,11 @@
+.popup__form_avatar {
+  margin: calc(50vh - 122px) auto;
+  min-height: 264px;
+}
+
+@media screen and (min-width: 768px) {
+  .popup__form_avatar {
+    margin: calc(50vh - 131px) auto;
+    min-height: 272px;
+  }
+}

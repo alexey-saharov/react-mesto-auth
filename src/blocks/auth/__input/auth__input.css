@@ -1,0 +1,24 @@
+.auth__input {
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  border: none;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.8);
+  color: #ccc;
+  background-color: #000;
+}
+
+.auth__input:focus {
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, .8);
+}
+
+@media screen and (min-width: 540px) {
+  .auth__input {
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,9 @@
+.auth__input_margin {
+  margin-bottom: 173px;
+}
+
+@media screen and (min-width: 540px) {
+  .auth__input_margin {
+    margin-bottom: 216px;
+  }
+}

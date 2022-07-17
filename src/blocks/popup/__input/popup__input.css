@@ -1,0 +1,22 @@
+.popup__input {
+  margin-bottom: 5px;
+  width: calc(282px - 2 * 22px);
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 400;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+}
+
+.popup__input:focus {
+  outline: none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, .8);
+}
+
+@media screen and (min-width: 768px) {
+  .popup__input {
+    width: calc(430px - 2 * 36px);
+  }
+}

@@ -1,0 +1,14 @@
+.auth {
+  max-width: 260px;
+  min-height: calc(100vh - 126px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (min-width: 540px) {
+  .auth {
+    max-width: 358px;
+    min-height: calc(100vh - 159px);
+  }
+}

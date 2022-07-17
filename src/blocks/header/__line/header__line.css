@@ -1,0 +1,10 @@
+.header__line {
+  max-width: 320px;
+  border-bottom: 1px solid rgba(84, 84, 84, .7);
+}
+
+@media screen and (min-width: 540px) {
+  .header__line {
+    max-width: calc(1280px - 200px * 2);
+  }
+}

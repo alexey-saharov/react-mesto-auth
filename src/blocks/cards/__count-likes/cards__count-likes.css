@@ -1,0 +1,10 @@
+.cards__count-likes {
+  margin: 0;
+  max-width: 110px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+}
