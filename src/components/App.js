@@ -11,6 +11,8 @@ import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import AddPlacePopup from "./AddPlacePopup";
 import Register from "./Register";
 import Login from "./Login";
+import RequireAuth from "./RequireAuth";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -103,34 +105,47 @@ function App() {
 
   return (
     <Routes>
-      <Route exact path="/" element={
-        <CurrentUserContext.Provider value={currentUser}>
-          <div className="root">
+      <Route
+        exact path="/"
+        element={
+          <RequireAuth
+            //todo настроить присвоение loggedIn
+            // loggedIn={this.state.loggedIn}
+            loggedIn={true}
+            redirectTo="/sign-in"
+          >
+            <CurrentUserContext.Provider value={currentUser}>
+              <div className="root">
 
-            <Header />
+                <Header />
 
-            <Main
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-              onEditAvatar={handleEditAvatarClick}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onCardClick={handleCardClick}
-            />
+                <Main
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                  onEditAvatar={handleEditAvatarClick}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onCardClick={handleCardClick}
+                />
 
-            <Footer />
+                <Footer />
 
-            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
-            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-            <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
-          </div>
-        </CurrentUserContext.Provider>
-      } />
-      <Route path="/sign-up" element={<Register />} />
-      <Route path="/sign-in" element={<Login />} />
+              </div>
+            </CurrentUserContext.Provider>
+          </RequireAuth>
+
+
+        }
+      />
+      <Route exact path="/sign-up" element={<Register />} />
+      <Route exact path="/sign-in" element={<Login />} />
+
     </Routes>
   );
 }
