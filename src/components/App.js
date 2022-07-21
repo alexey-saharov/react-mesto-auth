@@ -12,13 +12,14 @@ import AddPlacePopup from "./AddPlacePopup";
 import Register from "./Register";
 import Login from "./Login";
 import RequireAuth from "./RequireAuth";
-import InfoTooltip from "./InfoTooltip";
+import InfoTooltipPopup from "./InfoTooltipPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
 
@@ -77,6 +78,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
     setSelectedCard(null);
   }
 
@@ -136,14 +138,19 @@ function App() {
                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
                 <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
+
               </div>
             </CurrentUserContext.Provider>
           </RequireAuth>
-
-
         }
       />
-      <Route exact path="/sign-up" element={<Register />} />
+      <Route exact path="/sign-up" element={
+          <>
+            <Register />
+            <InfoTooltipPopup onClose={closeAllPopups}/>
+          </>
+        }
+      />
       <Route exact path="/sign-in" element={<Login />} />
 
     </Routes>

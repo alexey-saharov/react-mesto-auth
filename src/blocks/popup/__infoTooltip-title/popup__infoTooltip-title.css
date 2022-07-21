@@ -1,0 +1,14 @@
+.popup__infoTooltip-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 900;
+  color: #000;
+}
+
+@media screen and (min-width: 768px) {
+  .popup__infoTooltip-title {
+    font-size: 24px;
+    line-height: 29px;
+  }
+}

@@ -1,0 +1,15 @@
+.popup__infoTooltip-image {
+  margin-top: 50px;
+  margin-bottom: 40px;
+  width: 120px;
+  height: 120px;
+  border: none;
+  object-fit: cover;
+}
+
+@media screen and (min-width: 768px) {
+  .popup__infoTooltip-image {
+    margin-top: 60px;
+    margin-bottom: 32px;
+  }
+}
