@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -22,6 +22,7 @@ function App() {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   React.useEffect(() => {
     api.getUser()
@@ -105,22 +106,32 @@ function App() {
       .catch(err => console.log(err));
   }
 
+  //todo настроить присвоение loggedIn
+  //setLoggedIn(false);
+
   return (
     <Routes>
+
+      <Route exact path="/sign-up" element={
+          <>
+            <Register />
+            <InfoTooltipPopup onClose={closeAllPopups}/>
+          </>
+        }
+      />
+
+      <Route exact path="/sign-in" element={<Login />} />
+
       <Route
         exact path="/"
         element={
           <RequireAuth
-            //todo настроить присвоение loggedIn
-            // loggedIn={this.state.loggedIn}
-            loggedIn={true}
+            loggedIn={loggedIn}
             redirectTo="/sign-in"
           >
             <CurrentUserContext.Provider value={currentUser}>
               <div className="root">
-
                 <Header />
-
                 <Main
                   cards={cards}
                   onCardLike={handleCardLike}
@@ -130,28 +141,18 @@ function App() {
                   onAddPlace={handleAddPlaceClick}
                   onCardClick={handleCardClick}
                 />
-
                 <Footer />
-
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
                 <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
                 <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-
-
               </div>
             </CurrentUserContext.Provider>
           </RequireAuth>
         }
       />
-      <Route exact path="/sign-up" element={
-          <>
-            <Register />
-            <InfoTooltipPopup onClose={closeAllPopups}/>
-          </>
-        }
-      />
-      <Route exact path="/sign-in" element={<Login />} />
+
+      <Route path="*" element={<Navigate to={"/"} />} />
 
     </Routes>
   );
