@@ -8,10 +8,11 @@ import authError from "../images/auth-error.svg";
 // Попробуйте ещё раз.
 
 //todo добавить onClick на кнопку "Закрыть"
+//    <section className="popup popup_is-opened">
 
 function InfoTooltipPopup({ onClose }) {
   return (
-    <section className="popup popup_is-opened">
+    <section className="popup">
       <div className="popup__infoTooltip">
         <button type="button" aria-label="закрыть" className="popup__button-close" onClick={onClose}></button>
         <div className="popup__infoTooltip-image" style = {{ backgroundImage: `url(${authOk})` }}></div>

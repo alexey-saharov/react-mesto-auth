@@ -37,9 +37,9 @@ function Login() {
           />
 
           <button
+            type="submit"
             aria-label="Войти"
             className="auth__button-submit"
-            // onClick={}
           >
             Войти
           </button>
