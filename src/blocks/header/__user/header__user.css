@@ -1,9 +1,15 @@
 .header__user {
-  margin: 0;
-  margin-right: 24px;
+  margin: 0 24px 0 0;
   padding: 0;
+  display: none;
   font-size: 18px;
   line-height: 22px;
   font-weight: 500;
   color: #FFFFFF;
+}
+
+@media screen and (min-width: 540px) {
+  .header__user {
+    display: inline;
+  }
 }

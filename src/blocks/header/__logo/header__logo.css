@@ -4,6 +4,7 @@
   width: 104px;
   height: 25px;
   background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 @media screen and (min-width: 540px) {
