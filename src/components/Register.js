@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 function Register({ onRegister, onSuccess, onError }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();

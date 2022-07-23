@@ -1,10 +1,8 @@
 import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
 
 function Login({ onLogin, onSuccess, onError }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useNavigate();
 
   const resetForm = () => {
     setEmail('');

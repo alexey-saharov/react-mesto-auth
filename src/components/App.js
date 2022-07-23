@@ -14,7 +14,6 @@ import Login from "./Login";
 import RequireAuth from "./RequireAuth";
 import InfoTooltipPopup from "./InfoTooltipPopup";
 import * as Auth from "../utils/Auth";
-import infoTooltipPopup from "./InfoTooltipPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -60,11 +59,15 @@ function App() {
   const onLogin = ({ email, password }) => {
     return Auth.authorize(email, password)
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
-          setLoggedIn(true);
+        if (res) {
+          if (res.token) {
+            localStorage.setItem('jwt', res.token);
+            setLoggedIn(true);
+          }
+        } else {
+          throw new Error('Что-то пошло не так!');
         }
-      });
+      })
   }
 
   const handleLoginSuccess = () => {
@@ -76,19 +79,20 @@ function App() {
     setIsInfoTooltipPopupOpen(true);
   }
 
-
   const onRegister = ({ email, password }) => {
     return Auth.register(email, password)
       .then((res) => {
-        return res;
-      });
-
+        if (res.error) {
+          throw new Error(res.error);
+        } else {
+          return res;
+        }
+      })
   }
 
   const handleRegSuccess = () => {
     setIsRegSuccess(true);
     setIsInfoTooltipPopupOpen(true);
-    history('/sign-in');
   }
 
   const handleRegError = () => {
@@ -161,6 +165,16 @@ function App() {
     setSelectedCard(null);
   }
 
+  const closeInfoTooltipPopup = () => {
+    setIsInfoTooltipPopupOpen(false);
+    if (isRegSuccess) {
+      setTimeout(() => {
+        history('/sign-in');
+        setIsRegSuccess(false);
+      }, 400);
+    }
+  }
+
   React.useEffect(() => {
     api.getInitialCards()
       .then(cards => setCards(cards))
@@ -191,7 +205,7 @@ function App() {
         <div className="root">
           <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
           <Register onRegister={onRegister} onSuccess={handleRegSuccess} onError={handleRegError} />
-          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeAllPopups} />
+          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeInfoTooltipPopup} />
         </div>
       } />
 
@@ -199,7 +213,7 @@ function App() {
         <div className="root">
           <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
           <Login onLogin={onLogin} onSuccess={handleLoginSuccess} onError={handleLoginError} />
-          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeAllPopups} />
+          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeInfoTooltipPopup} />
         </div>
       } />
 

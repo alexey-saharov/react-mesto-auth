@@ -1,8 +1,6 @@
 import React from 'react';
 import logo from '../images/header-logo.svg';
 
-//todo Шапка для авторизованного и неавторизованного пользователя должна отличаться.
-
 function Header({ email, buttonText, onButtonClick }) {
   return (
     <header className="header root__section header_margin_bottom">
