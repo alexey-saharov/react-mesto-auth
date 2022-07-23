@@ -1,6 +1,6 @@
 # mesto-react
 
-https://alexey-saharov.github.io/mesto-react/
+https://alexey-saharov.github.io/react-mesto-auth/
 
 Проект используется в учебном курсе Яндекс.Практикум для изучения React, получает и сохраняет
 информацию на сервере. Содержит информацию о пользователе, карточки с изображением и текстом.
