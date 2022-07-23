@@ -1,5 +1,6 @@
 .auth__registered-text {
   margin: 0 auto;
+  display: inline-block;
   max-width: 100%;
   font-size: 14px;
   line-height: 17px;

@@ -1,6 +1,9 @@
 .header {
   max-width: 320px;
   padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media screen and (min-width: 540px) {

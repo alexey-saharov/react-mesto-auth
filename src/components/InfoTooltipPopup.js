@@ -2,22 +2,21 @@ import React from "react";
 import authOk from "../images/auth-ok.svg";
 import authError from "../images/auth-error.svg";
 
-//todo сделать условие, прописать значение в auth, вставить ее вместь authOk
-//todo сделать условие
-//Что-то пошло не так!
-// Попробуйте ещё раз.
+function InfoTooltipPopup({ isOpen, success, onClose }) {
 
-//todo добавить onClick на кнопку "Закрыть"
-//    <section className="popup popup_is-opened">
+  const classNamePopup = `popup ${isOpen && 'popup_is-opened'}`;
 
-function InfoTooltipPopup({ onClose }) {
+  const imageSrc = success ? authOk : authError;
+  const titleRaw1 = success ? 'Вы успешно' : 'Что-то пошло не так!';
+  const titleRaw2 = success ? 'зарегистрировались!' : 'Попробуйте ещё раз.';
+
   return (
-    <section className="popup">
+    <section className={classNamePopup}>
       <div className="popup__infoTooltip">
         <button type="button" aria-label="закрыть" className="popup__button-close" onClick={onClose}></button>
-        <div className="popup__infoTooltip-image" style = {{ backgroundImage: `url(${authOk})` }}></div>
-        <p className="popup__infoTooltip-title">Вы успешно</p>
-        <p className="popup__infoTooltip-title">зарегистрировались!</p>
+        <div className="popup__infoTooltip-image" style = {{ backgroundImage: `url(${imageSrc})` }}></div>
+        <p className="popup__infoTooltip-title">{titleRaw1}</p>
+        <p className="popup__infoTooltip-title">{titleRaw2}</p>
       </div>
     </section>
   )

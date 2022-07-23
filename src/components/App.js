@@ -14,6 +14,7 @@ import Login from "./Login";
 import RequireAuth from "./RequireAuth";
 import InfoTooltipPopup from "./InfoTooltipPopup";
 import * as Auth from "../utils/Auth";
+import infoTooltipPopup from "./InfoTooltipPopup";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -21,6 +22,8 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+  const [isRegSuccess, setIsRegSuccess] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -31,7 +34,7 @@ function App() {
     const content = await Auth.getContent(jwt)
       .then((res) => {
         if (res) {
-          const { email } = res;
+          const { email } = res.data;
           setLoggedIn(true);
           setUserData({
             email
@@ -57,7 +60,6 @@ function App() {
   const onLogin = ({ email, password }) => {
     return Auth.authorize(email, password)
       .then((res) => {
-        console.log(res);
         if (res.token) {
           localStorage.setItem('jwt', res.token);
           setLoggedIn(true);
@@ -65,12 +67,33 @@ function App() {
       });
   }
 
+  const handleLoginSuccess = () => {
+    history('/');
+  }
+
+  const handleLoginError = () => {
+    setIsLoginSuccess(false);
+    setIsInfoTooltipPopupOpen(true);
+  }
+
+
   const onRegister = ({ email, password }) => {
     return Auth.register(email, password)
       .then((res) => {
-        if (!res || res.statusCode === 400) throw new Error('Что-то пошло не так');
         return res;
       });
+
+  }
+
+  const handleRegSuccess = () => {
+    setIsRegSuccess(true);
+    setIsInfoTooltipPopupOpen(true);
+    history('/sign-in');
+  }
+
+  const handleRegError = () => {
+    setIsRegSuccess(false);
+    setIsInfoTooltipPopupOpen(true);
   }
 
   useEffect(() => {
@@ -80,6 +103,12 @@ function App() {
       })
       .catch(err => console.log(err));
   }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem('jwt');
+    history('/sign-in');
+    setLoggedIn(false);
+  }
 
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
@@ -155,33 +184,30 @@ function App() {
       .catch(err => console.log(err));
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //     onRegister({ email, password })
-  //       .then(() => history('/login'))
-  //       .catch((err) => setMessage(err.message || 'Что-то пошло не так'));
-  // }
-
   return (
     <Routes>
 
       <Route exact path="/sign-up" element={
-          <>
-            <Register onRegister={onRegister}/>
-            <InfoTooltipPopup onClose={closeAllPopups}/>
-          </>
-        }
-      />
+        <div className="root">
+          <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
+          <Register onRegister={onRegister} onSuccess={handleRegSuccess} onError={handleRegError} />
+          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeAllPopups} />
+        </div>
+      } />
 
       <Route exact path="/sign-in" element={
-        <Login onLogin={onLogin}/>
+        <div className="root">
+          <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
+          <Login onLogin={onLogin} onSuccess={handleLoginSuccess} onError={handleLoginError} />
+          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeAllPopups} />
+        </div>
       } />
 
       <Route exact path="/" element={
         <RequireAuth loggedIn={loggedIn} redirectTo="/sign-in">
           <CurrentUserContext.Provider value={currentUser}>
             <div className="root">
-              <Header loggedIn={loggedIn} userData={userData} />
+              <Header email={userData.email} buttonText="Выйти" onButtonClick={handleSignOut} />
               <Main
                 cards={cards}
                 onCardLike={handleCardLike}
