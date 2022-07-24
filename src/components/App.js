@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
-import Header from './Header';
+import Header from "./Header";
 import Main from './Main';
 import Footer from './Footer';
 import ImagePopup from "./ImagePopup";
@@ -217,26 +217,20 @@ function App() {
 
   return (
     <div className="root">
-      <Routes>
+      <Header email={userData.email} onClick={handleSignOut} />
 
+      <Routes>
         <Route exact path="/sign-up" element={
-          <>
-            <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
-            <Register onRegister={onRegister} />
-          </>
+          <Register onRegister={onRegister} />
         } />
 
         <Route exact path="/sign-in" element={
-          <>
-            <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
-            <Login onLogin={onLogin} />
-          </>
+          <Login onLogin={onLogin} />
         } />
 
         <Route exact path="/" element={
           <RequireAuth loggedIn={loggedIn} redirectTo="/sign-in">
             <CurrentUserContext.Provider value={currentUser}>
-              <Header email={userData.email} buttonText="Выйти" onButtonClick={handleSignOut} />
               <Main
                 cards={cards}
                 onCardLike={handleCardLike}
