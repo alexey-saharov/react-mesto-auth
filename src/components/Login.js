@@ -1,27 +1,12 @@
 import React, {useState} from "react";
 
-function Login({ onLogin, onSuccess, onError }) {
+function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const resetForm = () => {
-    setEmail('');
-    setPassword('');
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin({email, password})
-      .then(() => {
-        onSuccess();
-      })
-      .then(() => {
-        resetForm();
-      })
-      .catch((err) => {
-        onError();
-        console.log(err.message);
-      });
+    onLogin({email, password});
   }
 
   return (

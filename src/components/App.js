@@ -21,8 +21,7 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
-  const [isRegSuccess, setIsRegSuccess] = useState(false);
-  const [isLoginSuccess, setIsLoginSuccess] = useState(false);
+  const [isInfoTooltipSuccess, setIsInfoTooltipSuccess] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -68,6 +67,13 @@ function App() {
           throw new Error('Что-то пошло не так!');
         }
       })
+      .then(() => {
+        handleLoginSuccess();
+      })
+      .catch((err) => {
+        handleLoginError();
+        console.log(err.message);
+      });
   }
 
   const handleLoginSuccess = () => {
@@ -75,7 +81,7 @@ function App() {
   }
 
   const handleLoginError = () => {
-    setIsLoginSuccess(false);
+    setIsInfoTooltipSuccess(false);
     setIsInfoTooltipPopupOpen(true);
   }
 
@@ -88,15 +94,22 @@ function App() {
           return res;
         }
       })
+      .then(() => {
+        handleRegSuccess();
+      })
+      .catch((err) => {
+        handleRegError();
+        console.log(err.message);
+      });
   }
 
   const handleRegSuccess = () => {
-    setIsRegSuccess(true);
+    setIsInfoTooltipSuccess(true);
     setIsInfoTooltipPopupOpen(true);
   }
 
   const handleRegError = () => {
-    setIsRegSuccess(false);
+    setIsInfoTooltipSuccess(false);
     setIsInfoTooltipPopupOpen(true);
   }
 
@@ -169,10 +182,10 @@ function App() {
 
   const closeInfoTooltipPopup = () => {
     setIsInfoTooltipPopupOpen(false);
-    if (isRegSuccess) {
+    if (isInfoTooltipSuccess) {
       setTimeout(() => {
         history('/sign-in');
-        setIsRegSuccess(false);
+        setIsInfoTooltipSuccess(false);
       }, 400);
     }
   }
@@ -209,16 +222,14 @@ function App() {
         <Route exact path="/sign-up" element={
           <>
             <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
-            <Register onRegister={onRegister} onSuccess={handleRegSuccess} onError={handleRegError} />
-            <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeInfoTooltipPopup} />
+            <Register onRegister={onRegister} />
           </>
         } />
 
         <Route exact path="/sign-in" element={
           <>
             <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
-            <Login onLogin={onLogin} onSuccess={handleLoginSuccess} onError={handleLoginError} />
-            <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeInfoTooltipPopup} />
+            <Login onLogin={onLogin} />
           </>
         } />
 
@@ -249,7 +260,7 @@ function App() {
         } />
       </Routes>
 
-
+      <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isInfoTooltipSuccess} onClose={closeInfoTooltipPopup} />
     </div>
   );
 }
