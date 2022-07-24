@@ -101,12 +101,14 @@ function App() {
   }
 
   useEffect(() => {
-    api.getUser()
-      .then((getUserRes) => {
-        setCurrentUser(getUserRes)
-      })
-      .catch(err => console.log(err));
-  }, []);
+    if (loggedIn) {
+      api.getUser()
+        .then((getUserRes) => {
+          setCurrentUser(getUserRes)
+        })
+        .catch(err => console.log(err));
+    }
+  }, [loggedIn]);
 
   const handleSignOut = () => {
     localStorage.removeItem('jwt');
@@ -176,10 +178,12 @@ function App() {
   }
 
   React.useEffect(() => {
-    api.getInitialCards()
-      .then(cards => setCards(cards))
-      .catch(err => console.log(err));
-  }, []);
+    if (loggedIn) {
+      api.getInitialCards()
+        .then(cards => setCards(cards))
+        .catch(err => console.log(err));
+    }
+  }, [loggedIn]);
 
   function handleCardDelete(card) {
     api.deleteCard({ _id: card._id })
@@ -199,28 +203,28 @@ function App() {
   }
 
   return (
-    <Routes>
+    <div className="root">
+      <Routes>
 
-      <Route exact path="/sign-up" element={
-        <div className="root">
-          <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
-          <Register onRegister={onRegister} onSuccess={handleRegSuccess} onError={handleRegError} />
-          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeInfoTooltipPopup} />
-        </div>
-      } />
+        <Route exact path="/sign-up" element={
+          <>
+            <Header email='' buttonText='Войти' onButtonClick={() => {history('/sign-in')}} />
+            <Register onRegister={onRegister} onSuccess={handleRegSuccess} onError={handleRegError} />
+            <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isRegSuccess} onClose={closeInfoTooltipPopup} />
+          </>
+        } />
 
-      <Route exact path="/sign-in" element={
-        <div className="root">
-          <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
-          <Login onLogin={onLogin} onSuccess={handleLoginSuccess} onError={handleLoginError} />
-          <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeInfoTooltipPopup} />
-        </div>
-      } />
+        <Route exact path="/sign-in" element={
+          <>
+            <Header email='' buttonText='Регистрация' onButtonClick={() => {history('/sign-up')}} />
+            <Login onLogin={onLogin} onSuccess={handleLoginSuccess} onError={handleLoginError} />
+            <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isLoginSuccess} onClose={closeInfoTooltipPopup} />
+          </>
+        } />
 
-      <Route exact path="/" element={
-        <RequireAuth loggedIn={loggedIn} redirectTo="/sign-in">
-          <CurrentUserContext.Provider value={currentUser}>
-            <div className="root">
+        <Route exact path="/" element={
+          <RequireAuth loggedIn={loggedIn} redirectTo="/sign-in">
+            <CurrentUserContext.Provider value={currentUser}>
               <Header email={userData.email} buttonText="Выйти" onButtonClick={handleSignOut} />
               <Main
                 cards={cards}
@@ -236,14 +240,17 @@ function App() {
               <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
               <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
               <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-            </div>
-          </CurrentUserContext.Provider>
-        </RequireAuth>
-      } />
+            </CurrentUserContext.Provider>
+          </RequireAuth>
+        } />
 
-      <Route path="*" element={<Navigate to={"/"} />} />
+        <Route path="*" element={
+          <Navigate to={"/"} />
+        } />
+      </Routes>
 
-    </Routes>
+
+    </div>
   );
 }
 

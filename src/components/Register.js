@@ -4,11 +4,19 @@ function Register({ onRegister, onSuccess, onError }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onRegister({ email, password })
       .then(() => {
         onSuccess();
+      })
+      .then(() => {
+        resetForm();
       })
       .catch((err) => {
         onError();
