@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import Header from "./Header";
 import Main from './Main';
@@ -190,7 +190,7 @@ function App() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (loggedIn) {
       api.getInitialCards()
         .then(cards => setCards(cards))
@@ -241,10 +241,6 @@ function App() {
                 onCardClick={handleCardClick}
               />
               <Footer />
-              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-              <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
-              <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
             </CurrentUserContext.Provider>
           </RequireAuth>
         } />
@@ -253,6 +249,13 @@ function App() {
           <Navigate to={"/"} />
         } />
       </Routes>
+
+      <CurrentUserContext.Provider value={currentUser}>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace ={handleAddPlaceSubmit} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+      </CurrentUserContext.Provider>
 
       <InfoTooltipPopup isOpen={isInfoTooltipPopupOpen} success={isInfoTooltipSuccess} onClose={closeInfoTooltipPopup} />
     </div>
